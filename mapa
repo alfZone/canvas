@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+</body>
+  <script>
+// Get the canvas element
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+
+// Load the background image
+var bgImage = new Image();
+bgImage.src = 'path/to/your/background/image.jpg';
+
+// Wait for the image to load
+bgImage.onload = function() {
+  // Draw the background image
+  ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+  // Define the clickable points
+  var points = [
+    {
+      x: 100,
+      y: 100,
+      image: 'path/to/your/image1.jpg',
+      link: 'https://example.com/1'
+    },
+    {
+      x: 300,
+      y: 300,
+      image: 'path/to/your/image2.jpg',
+      link: 'https://example.com/2'
+    }
+  ];
+
+  // Draw the clickable points
+  points.forEach(function(point) {
+    var img = new Image();
+    img.src = point.image;
+
+    img.onload = function() {
+      ctx.drawImage(img, point.x, point.y, 50, 50);
+    };
+
+    // Add event listener to the canvas
+    canvas.addEventListener('click', function(event) {
+      var rect = canvas.getBoundingClientRect();
+      var x = event.clientX - rect.left;
+      var y = event.clientY - rect.top;
+
+      if (x >= point.x && x <= point.x + 50 && y >= point.y && y <= point.y + 50) {
+        window.open(point.link);
+      }
+    });
+  });
+};
+  </script>
+
+</html>
