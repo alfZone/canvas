@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa Interativo com Canvas</title>
+    <style>
+      canvas {
+        border: 1px solid black; /* Adicione uma borda para visualização */
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="mapCanvas" width="1200" height="600"> </canvas>
+
+    <script>
+      const canvas = document.getElementById("mapCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Desenhe a imagem de fundo no canvas
+      const img = new Image();
+      img.src = "planta-baixa-Casa-de-campo-pequena-com-2-quartos-.webp"; // Substitua com o caminho da sua imagem de fundo
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+
+      // Array de pontos clicáveis (x, y, link)
+      const clickablePoints = [
+        { x: 100, y: 200, link: "seu_link1.html", imageSrc: "82552.png" },
+        { x: 100, y: 400, link: "seu_link2.html", imageSrc: "82552.png" },
+        // Adicione mais pontos conforme necessário
+      ];
+
+      // Adicione event listener para clique no canvas
+      canvas.addEventListener("click", function (event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Verifique se o clique está dentro de algum ponto clicável
+        clickablePoints.forEach((point) => {
+          if (x >= point.x - 5 && x <= point.x + 5 && y >= point.y - 5 && y <= point.y + 5) {
+            window.location.href = point.link;
+          }
+        });
+      });
+
+      // Carregar imagens dos pontos clicáveis
+      clickablePoints.forEach((point) => {
+        const image = new Image();
+        image.src = point.imageSrc;
+        image.onload = function () {
+          ctx.drawImage(image, point.x - 10, point.y - 10, 20, 20); // Desenha a imagem centrada no ponto
+        };
+      });
+    </script>
+  </body>
+</html>
